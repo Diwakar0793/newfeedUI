@@ -17,7 +17,7 @@ export function app(): express.Express {
 
   // Enable CORS for all routes with a more permissive configuration for development
   server.use(cors({
-    origin: 'http://localhost:4200',
+    origin: 'https://newsfeed-api-six.vercel.app',
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
