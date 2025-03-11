@@ -1,0 +1,367 @@
+// Variables
+$primary-color: #1e3c72;
+$secondary-color: #2a5298;
+$text-color: #333;
+$light-gray: #f8f9fa;
+$border-radius: 12px;
+$box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
+
+// Mixins
+@mixin card {
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  transition: $transition;
+}
+
+.news-container {
+  padding: 1rem 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.header {
+  background: linear-gradient(135deg, #0062cc, #007bff);
+  color: white;
+  padding: 3rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+
+  .main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 0.5rem 0 0;
+  }
+}
+
+// Stats Section
+.stats-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  @include card;
+  padding: 1.5rem;
+  text-align: center;
+  background: linear-gradient(135deg, $primary-color, $secondary-color);
+  color: white;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+  }
+}
+
+// Filters Section
+.filters-section {
+  background: white;
+  border-radius: $border-radius;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: $box-shadow;
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .filter-group {
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: $text-color;
+      font-weight: 500;
+
+      i {
+        margin-right: 0.5rem;
+        color: $primary-color;
+      }
+    }
+
+    select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ddd;
+      border-radius: $border-radius;
+      background-color: white;
+      transition: $transition;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+      }
+    }
+  }
+}
+
+// Articles Grid
+.articles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.article-card {
+  @include card;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.article-content {
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.article-header {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.source-badge, .topic-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.source-badge {
+  color: white;
+}
+
+.topic-badge {
+  background-color: $light-gray;
+  color: $text-color;
+}
+
+.article-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: $text-color;
+  line-height: 1.4;
+}
+
+.article-summary {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  flex: 1;
+}
+
+.article-metadata {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+
+  .sentiment-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    i {
+      font-size: 1.1rem;
+    }
+  }
+
+  .timestamp {
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.tags-section {
+  margin-bottom: 1rem;
+
+  .tags-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: $text-color;
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    background-color: $light-gray;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    color: $text-color;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    i {
+      font-size: 0.8rem;
+      color: $primary-color;
+    }
+  }
+}
+
+.article-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+
+  .read-more-btn {
+    background-color: $primary-color;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: $transition;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+
+  .author {
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .stats-section {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .stat-card {
+    padding: 1rem;
+
+    .stat-number {
+      font-size: 2rem;
+    }
+
+    .stat-label {
+      font-size: 1rem;
+    }
+  }
+
+  .article-card {
+    margin-bottom: 1rem;
+  }
+
+  .article-title {
+    font-size: 1.1rem;
+  }
+
+  .article-footer {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+
+.card {
+  transition: transform 0.2s ease-in-out;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-right: 1rem;
+}
+
+.card-text {
+  color: #666;
+  margin: 1rem 0;
+}
+
+.badge {
+  font-weight: 500;
+  padding: 0.5em 0.8em;
+}
+
+.form-control {
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.15);
+    border-color: #80bdff;
+  }
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.text-success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.text-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.text-warning {
+  background-color: #fff3cd;
+  color: #856404;
+} 

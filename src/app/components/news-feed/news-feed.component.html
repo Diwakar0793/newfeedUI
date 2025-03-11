@@ -1,0 +1,107 @@
+<div class="news-container">
+  <header class="header">
+    <div class="container">
+      <h1 class="main-title">Latest News</h1>
+      <p class="subtitle">Stay informed with updates from top news sources</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- Stats Section -->
+    <div class="stats-section mb-4">
+      <div class="stat-card">
+        <div class="stat-number">{{newsData.articleCount}}</div>
+        <div class="stat-label">Articles</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{getUniqueSources().length}}</div>
+        <div class="stat-label">Sources</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">{{getUniqueTopics().length}}</div>
+        <div class="stat-label">Topics</div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-section">
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="filter-group">
+            <label for="sourceFilter">
+              <i class="fas fa-newspaper"></i> News Source
+            </label>
+            <select class="form-select" id="sourceFilter" [(ngModel)]="selectedSource" (change)="filterArticles()">
+              <option value="all">All Sources</option>
+              <option *ngFor="let source of getUniqueSources()" [value]="source">{{source}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="filter-group">
+            <label for="topicFilter">
+              <i class="fas fa-tag"></i> Topic
+            </label>
+            <select class="form-select" id="topicFilter" [(ngModel)]="selectedTopic" (change)="filterArticles()">
+              <option value="all">All Topics</option>
+              <option *ngFor="let topic of getUniqueTopics()" [value]="topic">{{topic}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="articles-grid">
+      <div class="article-card" *ngFor="let article of filteredArticles">
+        <div class="article-content">
+          <div class="article-header">
+            <span class="source-badge" [style.background-color]="getSourceColor(article.source)">{{article.source}}</span>
+            <span class="topic-badge">{{article.topic}}</span>
+          </div>
+          
+          <h2 class="article-title">{{article.title}}</h2>
+          <p class="article-summary">{{article.summary}}</p>
+          
+          <div class="article-metadata">
+            <div class="sentiment-indicator" [class]="getSentimentColor(article.sentimentScore)">
+              <i class="fas" [class]="getSentimentIcon(article.sentimentScore)"></i>
+              Sentiment: {{article.sentimentScore.toFixed(2)}}
+            </div>
+            <div class="timestamp">
+              <i class="far fa-clock"></i>
+              {{formatDate(article.timestamp)}}
+            </div>
+          </div>
+
+          <div class="tags-section" *ngIf="article.keyPeople.length > 0">
+            <div class="tags-title">Key People</div>
+            <div class="tags-container">
+              <span class="tag person-tag" *ngFor="let person of article.keyPeople">
+                <i class="fas fa-user"></i> {{person}}
+              </span>
+            </div>
+          </div>
+
+          <div class="tags-section" *ngIf="article.affectedStates.length > 0">
+            <div class="tags-title">Affected States</div>
+            <div class="tags-container">
+              <span class="tag state-tag" *ngFor="let state of article.affectedStates">
+                <i class="fas fa-map-marker-alt"></i> {{state}}
+              </span>
+            </div>
+          </div>
+
+          <div class="article-footer">
+            <a [href]="article.url" target="_blank" class="read-more-btn">
+              Read Full Article <i class="fas fa-external-link-alt"></i>
+            </a>
+            <span class="author" *ngIf="article.author !== 'Unknown'">
+              <i class="fas fa-pen"></i> {{article.author}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
