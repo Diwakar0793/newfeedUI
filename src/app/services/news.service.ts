@@ -7,7 +7,7 @@ import { NewsResponse } from '../models/news.interface';
   providedIn: 'root'
 })
 export class NewsService {
-  private apiUrl = 'https://newsfeed-8euvxl7va-diwakars-projects-d6262567.vercel.app'; // Your backend URL
+  private apiUrl = 'https://newfeed-api.vercel.app'; // Your backend URL
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
