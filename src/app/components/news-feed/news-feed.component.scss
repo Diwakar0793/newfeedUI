@@ -434,4 +434,61 @@ label {
       transform: translateY(-2px);
     }
   }
+}
+
+// Search Section
+.search-section {
+  margin: 2rem 0;
+  
+  .search-container {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .input-group {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: $border-radius;
+    overflow: hidden;
+
+    .input-group-text {
+      background-color: white;
+      border: none;
+      padding-left: 1.5rem;
+      
+      i {
+        color: $primary-color;
+      }
+    }
+
+    input {
+      border: none;
+      padding: 1rem;
+      font-size: 1rem;
+
+      &:focus {
+        box-shadow: none;
+        outline: none;
+      }
+    }
+  }
+}
+
+// Material Search Field
+.search-field {
+  width: 100%;
+  max-width: 600px;
+  display: block;
+  margin: 0 auto;
+}
+
+::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-text-field-wrapper {
+      background-color: white;
+    }
+    
+    .mat-mdc-form-field-focus-overlay {
+      background-color: white;
+    }
+  }
 } 

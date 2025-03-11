@@ -23,6 +23,7 @@
       </div>
     </div>
 
+
     <!-- Filters -->
     <div class="filters-section">
       <div class="row g-3">
@@ -49,6 +50,32 @@
           </div>
         </div>
       </div>
+    </div>
+
+
+    <!-- Search Bar -->
+    <div class="mb-4">
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Articles</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input 
+          matInput
+          type="text" 
+          placeholder="Search by title, summary, author, or topic..." 
+          [(ngModel)]="searchQuery"
+          (input)="filterArticles()"
+        >
+        @if (searchQuery) {
+          <button 
+            matSuffix 
+            mat-icon-button 
+            aria-label="Clear" 
+            (click)="searchQuery=''; filterArticles()"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+      </mat-form-field>
     </div>
 
     <!-- Loading State -->
