@@ -33,7 +33,7 @@
             </label>
             <select class="form-select" id="sourceFilter" [(ngModel)]="selectedSource" (change)="filterArticles()">
               <option value="all">All Sources</option>
-              <option *ngFor="let source of getUniqueSources()" [value]="source">{{source}}</option>
+              <option *ngFor="let source of sources" [value]="source">{{source}}</option>
             </select>
           </div>
         </div>

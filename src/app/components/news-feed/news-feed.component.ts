@@ -24,8 +24,11 @@ export class NewsFeedComponent implements OnInit {
   selectedTopic: string = 'all';
   loading: boolean = true;
   error: string | null = null;
+  sources:any[] = [];
 
-  constructor(private newsService: NewsService) {}
+  constructor(private newsService: NewsService) {
+    this.sources = [];
+  }
 
   ngOnInit() {
     this.loadNews();
@@ -62,6 +65,7 @@ export class NewsFeedComponent implements OnInit {
   private handleNewsResponse(response: NewsResponse) {
     this.newsData = response;
     this.filteredArticles = this.newsData.articles;
+    this.sources = this.newsData.sourcesScraped;
     this.loading = false;
   }
 
@@ -76,6 +80,9 @@ export class NewsFeedComponent implements OnInit {
   }
 
   getUniqueSources(): string[] {
+    console.log("newsData", this.newsData);
+    // this.sources = this.newsData.sourcesScraped
+
     return Array.from(new Set(this.newsData.articles.map(article => article.source)));
   }
 

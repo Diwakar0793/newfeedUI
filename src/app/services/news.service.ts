@@ -12,8 +12,7 @@ export class NewsService {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
       'Accept': 'application/json'
-    }),
-    withCredentials: false // Set this to true if you need to send cookies
+    })
   };
 
   constructor(private http: HttpClient) {}
@@ -26,14 +25,14 @@ export class NewsService {
   }
 
   getNewsBySource(source: string): Observable<NewsResponse> {
-    return this.http.get<NewsResponse>(`${this.apiUrl}/news/source/${source}`, this.httpOptions)
+    return this.http.get<NewsResponse>(`${this.apiUrl}/analyze-news?source=${source}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getNewsByTopic(topic: string): Observable<NewsResponse> {
-    return this.http.get<NewsResponse>(`${this.apiUrl}/news/topic/${topic}`, this.httpOptions)
+    return this.http.get<NewsResponse>(`${this.apiUrl}/analyze-news?topic=${topic}`, this.httpOptions)
       .pipe(
         catchError(this.handleError)
       );

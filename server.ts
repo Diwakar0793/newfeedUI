@@ -16,7 +16,12 @@ export function app(): express.Express {
   const commonEngine = new CommonEngine();
 
   // Enable CORS for all routes with a more permissive configuration for development
-  server.use(cors());  // This allows all origins during development
+  server.use(cors({
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  }));
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
