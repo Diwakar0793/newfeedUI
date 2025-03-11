@@ -364,4 +364,74 @@ label {
 .text-warning {
   background-color: #fff3cd;
   color: #856404;
+}
+
+// Loading State
+.loading-container {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin: 2rem 0;
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba($primary-color, 0.1);
+    border-radius: 50%;
+    border-top-color: $primary-color;
+    margin: 0 auto 1rem;
+    animation: spin 1s linear infinite;
+  }
+
+  p {
+    color: $text-color;
+    font-size: 1.1rem;
+    margin: 0;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Error State
+.error-container {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow;
+  margin: 2rem 0;
+
+  i {
+    font-size: 3rem;
+    color: #dc3545;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: $text-color;
+    font-size: 1.1rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .retry-button {
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: $transition;
+
+    &:hover {
+      background-color: $secondary-color;
+      transform: translateY(-2px);
+    }
+  }
 } 

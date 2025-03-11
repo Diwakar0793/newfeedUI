@@ -19,7 +19,7 @@ import { NewsFeedComponent } from './components/news-feed/news-feed.component';
         <app-news-feed></app-news-feed>
       </main>
       <footer class="app-footer">
-        <p>© ${new Date().getFullYear()} News Feed. All rights reserved.</p>
+        <p>© {{currentYear}} News Feed. All rights reserved.</p>
       </footer>
     </div>
   `,
@@ -97,5 +97,7 @@ import { NewsFeedComponent } from './components/news-feed/news-feed.component';
   `]
 })
 export class AppComponent {
+  currentYear = new Date().getFullYear();
+
   constructor() {}
 }

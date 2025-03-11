@@ -51,57 +51,88 @@
       </div>
     </div>
 
-    <!-- Articles Grid -->
-    <div class="articles-grid">
-      <div class="article-card" *ngFor="let article of filteredArticles">
-        <div class="article-content">
-          <div class="article-header">
-            <span class="source-badge" [style.background-color]="getSourceColor(article.source)">{{article.source}}</span>
-            <span class="topic-badge">{{article.topic}}</span>
-          </div>
-          
-          <h2 class="article-title">{{article.title}}</h2>
-          <p class="article-summary">{{article.summary}}</p>
-          
-          <div class="article-metadata">
-            <div class="sentiment-indicator" [class]="getSentimentColor(article.sentimentScore)">
-              <i class="fas" [class]="getSentimentIcon(article.sentimentScore)"></i>
-              Sentiment: {{article.sentimentScore.toFixed(2)}}
-            </div>
-            <div class="timestamp">
-              <i class="far fa-clock"></i>
-              {{formatDate(article.timestamp)}}
-            </div>
-          </div>
-
-          <div class="tags-section" *ngIf="article.keyPeople.length > 0">
-            <div class="tags-title">Key People</div>
-            <div class="tags-container">
-              <span class="tag person-tag" *ngFor="let person of article.keyPeople">
-                <i class="fas fa-user"></i> {{person}}
-              </span>
-            </div>
-          </div>
-
-          <div class="tags-section" *ngIf="article.affectedStates.length > 0">
-            <div class="tags-title">Affected States</div>
-            <div class="tags-container">
-              <span class="tag state-tag" *ngFor="let state of article.affectedStates">
-                <i class="fas fa-map-marker-alt"></i> {{state}}
-              </span>
-            </div>
-          </div>
-
-          <div class="article-footer">
-            <a [href]="article.url" target="_blank" class="read-more-btn">
-              Read Full Article <i class="fas fa-external-link-alt"></i>
-            </a>
-            <span class="author" *ngIf="article.author !== 'Unknown'">
-              <i class="fas fa-pen"></i> {{article.author}}
-            </span>
-          </div>
-        </div>
+    <!-- Loading State -->
+    @if (loading) {
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading news...</p>
       </div>
-    </div>
+    }
+
+    <!-- Error State -->
+    @if (error) {
+      <div class="error-container">
+        <i class="fas fa-exclamation-circle"></i>
+        <p>{{error}}</p>
+        <button class="retry-button" (click)="loadNews()">Try Again</button>
+      </div>
+    }
+
+    <!-- Articles Grid -->
+    @if (!loading && !error) {
+      <div class="articles-grid">
+        @for (article of filteredArticles; track article.url) {
+          <div class="article-card">
+            <div class="article-content">
+              <div class="article-header">
+                <span class="source-badge" [style.background-color]="getSourceColor(article.source)">{{article.source}}</span>
+                <span class="topic-badge">{{article.topic}}</span>
+              </div>
+              
+              <h2 class="article-title">{{article.title}}</h2>
+              <p class="article-summary">{{article.summary}}</p>
+              
+              <div class="article-metadata">
+                <div class="sentiment-indicator" [class]="getSentimentColor(article.sentimentScore)">
+                  <i class="fas" [class]="getSentimentIcon(article.sentimentScore)"></i>
+                  Sentiment: {{article.sentimentScore.toFixed(2)}}
+                </div>
+                <div class="timestamp">
+                  <i class="far fa-clock"></i>
+                  {{formatDate(article.timestamp)}}
+                </div>
+              </div>
+
+              @if (article.keyPeople.length > 0) {
+                <div class="tags-section">
+                  <div class="tags-title">Key People</div>
+                  <div class="tags-container">
+                    @for (person of article.keyPeople; track person) {
+                      <span class="tag person-tag">
+                        <i class="fas fa-user"></i> {{person}}
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+
+              @if (article.affectedStates.length > 0) {
+                <div class="tags-section">
+                  <div class="tags-title">Affected States</div>
+                  <div class="tags-container">
+                    @for (state of article.affectedStates; track state) {
+                      <span class="tag state-tag">
+                        <i class="fas fa-map-marker-alt"></i> {{state}}
+                      </span>
+                    }
+                  </div>
+                </div>
+              }
+
+              <div class="article-footer">
+                <a [href]="article.url" target="_blank" class="read-more-btn">
+                  Read Full Article <i class="fas fa-external-link-alt"></i>
+                </a>
+                @if (article.author !== 'Unknown') {
+                  <span class="author">
+                    <i class="fas fa-pen"></i> {{article.author}}
+                  </span>
+                }
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
   </div>
 </div> 

@@ -1,5 +1,6 @@
 import { APP_BASE_HREF } from '@angular/common';
 import express from 'express';
+import cors from 'cors';
 import { fileURLToPath } from 'url';
 import { dirname, join, resolve } from 'path';
 import { CommonEngine } from '@angular/ssr';
@@ -14,11 +15,24 @@ export function app(): express.Express {
 
   const commonEngine = new CommonEngine();
 
+  // Enable CORS for all routes with a more permissive configuration for development
+  server.use(cors());  // This allows all origins during development
+
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
   // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
+  server.get('/analyze-news', (req, res) => {
+    // Mock response for testing
+    res.json({
+      status: "success",
+      timestamp: new Date().toISOString(),
+      articleCount: 105,
+      articles: [],
+      sourcesScraped: ["Times of India", "The Hindu", "Hindustan Times"]
+    });
+  });
+
   // Serve static files from /browser
   server.get('*.*', express.static(browserDistFolder, {
     maxAge: '1y'
@@ -44,7 +58,7 @@ export function app(): express.Express {
 }
 
 function run(): void {
-  const port = process.env['PORT'] || 4000;
+  const port = process.env['PORT'] || 3000;
 
   // Start up the Node server
   const server = app();

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NewsArticle, NewsResponse } from '../../models/news.interface';
+import { NewsService } from '../../services/news.service';
 
 @Component({
   selector: 'app-news-feed',
@@ -12,39 +13,70 @@ import { NewsArticle, NewsResponse } from '../../models/news.interface';
 })
 export class NewsFeedComponent implements OnInit {
   newsData: NewsResponse = {
-    status: "success",
-    timestamp: "2025-03-11T07:18:45.622Z",
-    articleCount: 45,
+    status: "loading",
+    timestamp: new Date().toISOString(),
+    articleCount: 0,
     articles: [],
-    sourcesScraped: ["Times of India", "The Hindu", "Hindustan Times"]
+    sourcesScraped: []
   };
   filteredArticles: NewsArticle[] = [];
   selectedSource: string = 'all';
   selectedTopic: string = 'all';
+  loading: boolean = true;
+  error: string | null = null;
 
-  private sourceColors: Record<string, string> = {
-    'Times of India': '#ff4444',
-    'The Hindu': '#4285f4',
-    'Hindustan Times': '#00c851'
-  };
+  constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.newsData = this.getMockData();
+    this.loadNews();
+  }
+
+  loadNews() {
+    this.loading = true;
+    this.error = null;
+    
+    if (this.selectedSource !== 'all') {
+      this.newsService.getNewsBySource(this.selectedSource).subscribe({
+        next: (response) => {
+          this.handleNewsResponse(response);
+        },
+        error: (error) => this.handleError(error)
+      });
+    } else if (this.selectedTopic !== 'all') {
+      this.newsService.getNewsByTopic(this.selectedTopic).subscribe({
+        next: (response) => {
+          this.handleNewsResponse(response);
+        },
+        error: (error) => this.handleError(error)
+      });
+    } else {
+      this.newsService.getNews().subscribe({
+        next: (response) => {
+          this.handleNewsResponse(response);
+        },
+        error: (error) => this.handleError(error)
+      });
+    }
+  }
+
+  private handleNewsResponse(response: NewsResponse) {
+    this.newsData = response;
     this.filteredArticles = this.newsData.articles;
+    this.loading = false;
+  }
+
+  private handleError(error: any) {
+    console.error('Error fetching news:', error);
+    this.error = 'Failed to load news. Please try again later.';
+    this.loading = false;
   }
 
   filterArticles() {
-    this.filteredArticles = this.newsData.articles.filter(article => {
-      const sourceMatch = this.selectedSource === 'all' || article.source === this.selectedSource;
-      const topicMatch = this.selectedTopic === 'all' || article.topic === this.selectedTopic;
-      return sourceMatch && topicMatch;
-    });
+    this.loadNews();
   }
 
   getUniqueSources(): string[] {
-    console.log("getUniqueSources",this.newsData.articles)
     return Array.from(new Set(this.newsData.articles.map(article => article.source)));
-   
   }
 
   getUniqueTopics(): string[] {
@@ -68,33 +100,11 @@ export class NewsFeedComponent implements OnInit {
   }
 
   getSourceColor(source: string): string {
-    return this.sourceColors[source] || '#6c757d';
-  }
-
-  private getMockData(): NewsResponse {
-    return {
-      "status": "success",
-      "timestamp": "2025-03-11T07:18:45.622Z",
-      "articleCount": 45,
-      "articles": [
-        {
-          "source": "Times of India",
-          "title": "'A monetary transaction': Elon Musk's estranged trans daughter Vivian Wilson claims he used sex-selective IVF",
-          "topic": "general",
-          "summary": "'A monetary transaction': Elon Musk's estranged trans daughter Vivian Wilson claims he used sex-selective IVF Vivian Jenna Wilson, Elon Musk's estr...",
-          "sentimentScore": 0.1,
-          "affectedStates": [],
-          "keyPeople": ["Elon Musk", "Vivian Wilson", "Vivian Jenna Wilson"],
-          "organizations": [],
-          "timestamp": "2025-03-11T11:56:02+05:30",
-          "contentLength": 399,
-          "url": "https://timesofindia.indiatimes.com/world/us/a-monetary-transaction-elon-musks-estranged-trans-daughter-vivian-wilson-claims-he-used-sex-selective-ivf/articleshow/118871928.cms",
-          "category": [],
-          "author": "TOI World Desk"
-        },
-        // ... Add all other articles from the JSON here ...
-      ],
-      "sourcesScraped": ["Times of India", "The Hindu", "Hindustan Times"]
+    const colors: Record<string, string> = {
+      'Times of India': '#ff4444',
+      'The Hindu': '#4285f4',
+      'Hindustan Times': '#00c851'
     };
+    return colors[source] || '#6c757d';
   }
 } 
